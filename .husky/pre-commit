@@ -1,0 +1,12 @@
+echo "🔍 Running lint-staged on staged files..."
+
+npm run lint:staged
+
+# When using Typescript (enable these 3 below comment)
+# echo "🧠 Checking types..."
+
+# tsc --noEmit
+
+# echo "✅ Proceeding with commit"
+
+echo "✅ Linting and formatting complete. Proceeding with commit."
