@@ -10,14 +10,15 @@ import { FiLogOut } from "react-icons/fi";
 
 function Navbar() {
   return (
-    <div className="flex h-19 w-full items-center justify-evenly border-b-[0.5px] border-gray-400">
-      <Image
-        src={logo}
-        alt="DesiredMart - Logo of Website"
-        loading="lazy"
-        className="border"
-        width={68}
-      />
+    <div className="flex h-19 w-full items-center justify-evenly border-b-[0.5px] border-gray-200">
+      <div className="relative w-16 lg:w-17">
+        <Image
+          src={logo}
+          alt="DesiredMart - Logo of Website"
+          loading="lazy"
+          className="border"
+        />
+      </div>
       <div className="relative w-1/2">
         {/* The Icon */}
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -31,11 +32,11 @@ function Navbar() {
           placeholder="Search for Products, Brands and More"
         />
       </div>
-      <div className="flex items-center justify-center gap-1">
+      <div className="hidden items-center justify-center gap-1 lg:flex">
         <VscAccount size={21} />
         <p className="text-md font-semibold text-gray-800">Profile</p>
       </div>
-      <div className="flex items-center justify-center gap-1">
+      <div className="hidden items-center justify-center gap-1 lg:flex">
         <IoMdHeartEmpty size={21} />
         <p className="text-md font-semibold text-gray-800">Wishlist</p>
       </div>
@@ -46,12 +47,14 @@ function Navbar() {
             0
           </span>
         </span>
-        <p className="text-md font-semibold text-gray-800">Cart</p>
+        <p className="text-md hidden font-semibold text-gray-800 lg:flex">
+          Cart
+        </p>
       </div>
-      <div>
+      <div className="flex items-center justify-center">
         <MdOutlineLightMode size={21} />
       </div>
-      <div className="text- flex items-center justify-center gap-1 rounded-xl border-2 bg-[#0A2A50] p-2 text-white">
+      <div className="hidden items-center justify-center gap-1 rounded-xl border-2 bg-[#0A2A50] p-2 text-white lg:block lg:flex">
         <FiLogOut size={21} />
         <p className="text-md font-semibold">Logout</p>
       </div>
