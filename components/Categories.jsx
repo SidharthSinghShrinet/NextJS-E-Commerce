@@ -22,13 +22,13 @@ function Categories() {
     { type: "Groceries & Essentials", image: <IoFastFoodOutline /> },
   ];
   return (
-    <div className="flex w-[98%] flex-col items-center justify-center gap-5 rounded-2xl border border-gray-300 py-5 shadow-2xl shadow-neutral-400">
+    <div className="flex w-[98%] flex-col items-center justify-center gap-5 rounded-4xl border border-gray-300 py-5 shadow-lg shadow-neutral-400">
       <p className="text-4xl font-bold">Categories</p>
-      <div className="grid w-[90%] max-w-7xl grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid w-[90%] max-w-7xl grid-cols-2 justify-items-center gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {categories.map((category, index) => (
           <div
             key={index}
-            className="flex h-40 w-40 cursor-pointer flex-col items-center justify-center gap-5 rounded-xl border border-gray-200 bg-white p-6 text-center font-semibold text-gray-700 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:text-blue-600 hover:shadow-md"
+            className="flex h-40 w-40 cursor-pointer flex-col items-center justify-center gap-3 rounded-4xl border border-gray-200 bg-white p-6 text-center font-semibold text-gray-700 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:text-blue-600 hover:shadow-md"
           >
             <span className="text-4xl">{category.image}</span>
             <p>{category.type}</p>

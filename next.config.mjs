@@ -6,6 +6,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        hostname: "fakestoreapi.com",
+      },
+      {
         hostname: "cdn.dummyjson.com",
       },
     ],

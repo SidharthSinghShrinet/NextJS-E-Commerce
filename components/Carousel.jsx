@@ -17,7 +17,7 @@ export function EmblaCarousel() {
 
   return (
     <div
-      className="embla h-50 w-full shadow-2xl shadow-neutral-400 lg:h-90 lg:w-[98%] lg:rounded-lg"
+      className="embla h-50 w-full shadow-lg shadow-neutral-400 lg:h-90 lg:w-[98%] lg:rounded-4xl"
       ref={emblaRef}
     >
       <div className="embla__container h-full">
@@ -27,13 +27,14 @@ export function EmblaCarousel() {
             alt="Banner 1"
             fill={true}
             className="object-fill"
+            loading="eager"
           />
         </div>
         <div className="embla__slide relative flex h-full w-full items-center justify-center">
-          <Image src={banner2} alt="Banner 2" fill={true} />
+          <Image src={banner2} alt="Banner 2" fill={true} loading="eager" />
         </div>
         <div className="embla__slide relative flex h-full w-full items-center justify-center">
-          <Image src={banner4} alt="Banner 4" fill={true} />
+          <Image src={banner4} alt="Banner 4" fill={true} loading="eager" />
         </div>
         <div className="embla__slide relative flex h-full w-full items-center justify-center">
           <Image
@@ -41,6 +42,7 @@ export function EmblaCarousel() {
             alt="Banner 3"
             fill={true}
             className="object-fill"
+            loading="eager"
           />
         </div>
       </div>
