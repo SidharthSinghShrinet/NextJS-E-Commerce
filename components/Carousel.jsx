@@ -17,7 +17,7 @@ export function EmblaCarousel() {
 
   return (
     <div
-      className="embla h-50 w-full shadow-lg shadow-neutral-400 lg:h-90 lg:w-[98%] lg:rounded-4xl"
+      className="embla h-50 w-full shadow-lg shadow-neutral-400 lg:h-95 lg:w-[98%] lg:rounded-4xl"
       ref={emblaRef}
     >
       <div className="embla__container h-full">

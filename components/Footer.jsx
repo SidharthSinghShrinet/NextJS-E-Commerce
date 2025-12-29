@@ -1,8 +1,9 @@
+import Link from "next/link";
 import React from "react";
 
 function Footer() {
   return (
-    <footer className="flex w-full justify-center bg-gray-50 bg-white pt-4">
+    <footer className="flex w-full justify-center bg-gray-50 pt-4">
       <div className="mx-auto w-[98%] rounded-t-4xl border-t-2 border-r-2 border-l-2 border-gray-300 shadow-2xl">
         <div className="grid grid-cols-2 gap-8 px-4 py-6 md:grid-cols-4 lg:py-8">
           <div>
@@ -11,14 +12,14 @@ function Footer() {
             </h2>
             <ul className="text-body font-medium">
               <li className="mb-4">
-                <a href="#" className="hover:underline">
-                  About
-                </a>
+                <Link href={"/"} className="hover:underline">
+                  HomePage
+                </Link>
               </li>
               <li className="mb-4">
-                <a href="#" className="hover:underline">
-                  Careers
-                </a>
+                <Link href="/products" className="hover:underline">
+                  Products
+                </Link>
               </li>
               <li className="mb-4">
                 <a href="#" className="hover:underline">

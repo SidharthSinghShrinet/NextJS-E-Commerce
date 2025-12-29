@@ -7,7 +7,7 @@ const connectDB = async () => {
     return;
   }
   await mongoose.connect("mongodb://localhost:27017", {
-    dbName: "Ecommerce",
+    dbName: "DesireMart",
   });
   console.log("MongoDB connected to database successfully...");
   console.log("After connecting to Database...");
