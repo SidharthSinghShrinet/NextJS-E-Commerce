@@ -6,7 +6,13 @@ import { IoCartOutline } from "react-icons/io5";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineLightMode } from "react-icons/md";
-import { FiLogOut } from "react-icons/fi";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 import Link from "next/link";
 
 function Navbar() {
@@ -57,10 +63,18 @@ function Navbar() {
       <div className="flex items-center justify-center">
         <MdOutlineLightMode size={21} />
       </div>
-      <div className="hidden items-center justify-center gap-1 rounded-xl border-2 bg-[#0A2A50] p-2 text-white lg:block lg:flex">
-        <FiLogOut size={21} />
-        <p className="text-md font-semibold">Logout</p>
-      </div>
+      <header className="flex h-16 items-center justify-end gap-4 p-4">
+        <SignedOut>
+          <SignInButton
+            mode="modal"
+            forceRedirectUrl="/products"
+            className="text-md font-semibold text-gray-800"
+          />
+        </SignedOut>
+        <SignedIn>
+          <UserButton forceRedirectUrl="/" />
+        </SignedIn>
+      </header>
     </div>
   );
 }
