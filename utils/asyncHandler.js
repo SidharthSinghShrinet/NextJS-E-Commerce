@@ -5,6 +5,56 @@ const asyncHandler = (handler) => {
     try {
       return await handler(req, context);
     } catch (error) {
+      if (error.code === 11000) {
+        const field = Object.keys(error.keyValue)[0];
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Provided ${field} already exists.`,
+            errObj: error,
+          },
+          {
+            status: 409,
+          },
+        );
+      }
+      if (error.name === "ValidationError") {
+        return NextResponse.json(
+          {
+            success: false,
+            errObj: Object.values(error.errors)
+              .map((err) => err.message)
+              .join(", "),
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+      if (error.name === "CastError") {
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Invalid ${error.path}: ${error.value}.`,
+            errObj: error,
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+      if (error?.name === "SyntaxError") {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Invalid JSON syntax in request body.",
+            errObj: error,
+          },
+          {
+            status: 400,
+          },
+        );
+      }
       if (error?.isApiError) {
         return NextResponse.json(
           {

@@ -7,6 +7,7 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineLightMode } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
+import Link from "next/link";
 
 function Navbar() {
   return (
@@ -40,17 +41,19 @@ function Navbar() {
         <IoMdHeartEmpty size={21} />
         <p className="text-md font-semibold text-gray-800">Wishlist</p>
       </div>
-      <div className="flex items-center justify-center gap-2">
-        <span className="relative inline-flex items-center">
-          <IoCartOutline size={21} />
-          <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-            0
+      <Link href={"/cart"}>
+        <div className="flex items-center justify-center gap-2">
+          <span className="relative inline-flex items-center">
+            <IoCartOutline size={21} />
+            <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+              0
+            </span>
           </span>
-        </span>
-        <p className="text-md hidden font-semibold text-gray-800 lg:flex">
-          Cart
-        </p>
-      </div>
+          <p className="text-md hidden font-semibold text-gray-800 lg:flex">
+            Cart
+          </p>
+        </div>
+      </Link>
       <div className="flex items-center justify-center">
         <MdOutlineLightMode size={21} />
       </div>

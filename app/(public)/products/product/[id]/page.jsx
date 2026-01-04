@@ -11,13 +11,16 @@ function Page(props) {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product.product);
+  console.log(product);
   useEffect(() => {
     async function getProduct() {
-      const response = await fetch(`https://dummyjson.com/products/${id}`);
-      const data = await response.json();
+      // const response = await fetch(`https://dummyjson.com/products/${id}`);
+      const response = await fetch(`/api/products/singleproduct/${id}`);
+      console.log("Response:", response);
+      const { data } = await response.json();
       // console.log(data);
-      // console.log("Component is mounted successfully");
       dispatch(setProduct(data));
+      console.log("Component is mounted successfully");
     }
     getProduct();
     return () => {
@@ -63,10 +66,11 @@ function Page(props) {
               </div>
               <div className="flex items-center gap-1.5 text-sm font-semibold">
                 <span className="flex items-center gap-0.5 rounded-4xl bg-blue-500 px-1 text-white">
-                  {product.rating} <FaStar className="text-gray-200" />
+                  {product.averageRating} <FaStar className="text-gray-200" />
                 </span>
                 <span className="text-neutral-600">
-                  ({product.stock} Ratings and {product.reviews.length} Reviews)
+                  ({product.averageRating} Ratings and {product.totalReviews}{" "}
+                  Reviews)
                 </span>
               </div>
             </div>
@@ -93,16 +97,22 @@ function Page(props) {
                   <span className="text-md font-semibold text-slate-500">
                     Weight
                   </span>
-                  <span className="text-sm font-normal">
-                    {product.weight * 100}g
-                  </span>
-                  <span className="text-md font-semibold text-slate-500">
+                  <span className="text-sm font-normal">{1850}g</span>
+                  {/* <span className="text-md font-semibold text-slate-500">
                     Dimensions
                   </span>
                   <span className="text-sm font-normal">
                     {product.dimensions.width} x {product.dimensions.height} x{" "}
                     {product.dimensions.depth}
-                  </span>
+                  </span> */}
+                  {product.specifications.map((spec, index) => (
+                    <React.Fragment key={index}>
+                      <span className="text-md font-semibold text-slate-500">
+                        {spec.label}
+                      </span>
+                      <span className="text-sm font-normal">{spec.value}</span>
+                    </React.Fragment>
+                  ))}
                   <span className="text-md font-semibold text-slate-500">
                     Warranty Info
                   </span>
@@ -143,7 +153,7 @@ function Page(props) {
             <span className="my-0.5 border border-neutral-200" />
             <div>
               <p className="text-lg font-bold">Review & Ratings</p>
-              <div className="flex flex-col gap-3 py-5">
+              {/* <div className="flex flex-col gap-3 py-5">
                 {product.reviews.length === 0 ? (
                   <p>Loading...</p>
                 ) : (
@@ -178,7 +188,7 @@ function Page(props) {
                     </div>
                   ))
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

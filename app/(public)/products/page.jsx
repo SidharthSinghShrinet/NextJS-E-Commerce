@@ -16,12 +16,14 @@ function Page() {
   }
   useEffect(() => {
     async function getAllProducts() {
-      // const response = await fetch(
-      //   "http://localhost:3000/api/products/findproducts",
-      // );
-      const response = await fetch("https://dummyjson.com/products/");
-      const { products } = await response.json();
-      dispatch(setAllProducts(products));
+      const response = await fetch(
+        "http://localhost:3000/api/products/findproducts",
+      );
+      // const response = await fetch("https://dummyjson.com/products/");
+      // const { products } = await response.json();
+      const { data } = await response.json();
+      console.log(data);
+      dispatch(setAllProducts(data));
     }
     getAllProducts();
   }, []);
@@ -34,7 +36,7 @@ function Page() {
         ) : (
           allProducts.map((product, index) => (
             <div
-              onClick={() => handleProduct(product.id)}
+              onClick={() => handleProduct(product._id)}
               key={index}
               className="flex h-85 w-70 flex-col items-center justify-center hover:-translate-y-3 hover:border hover:border-gray-300 hover:bg-white hover:shadow-md hover:shadow-neutral-400 hover:duration-300"
             >
@@ -43,7 +45,7 @@ function Page() {
                   src={product.thumbnail}
                   alt={product.title}
                   fill={true}
-                  className="object-contain"
+                  className="object-contain p-2"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
@@ -55,9 +57,9 @@ function Page() {
                         product.category.slice(1)}
                   </p>
                   <div className="flex items-center justify-center gap-1 text-sm font-bold text-gray-600">
-                    {product.rating}
+                    {product.averageRating}
                     <FaStar className="text-green-400" /> |{" "}
-                    {product.reviews?.length}
+                    {product.totalReviews}
                   </div>
                 </div>
                 <p className="text-sm font-medium">{product.title}</p>

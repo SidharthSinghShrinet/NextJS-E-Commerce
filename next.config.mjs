@@ -11,6 +11,15 @@ const nextConfig = {
       {
         hostname: "cdn.dummyjson.com",
       },
+      {
+        hostname: "rukminim2.flixcart.com",
+      },
+      {
+        hostname: "images.unsplash.com",
+      },
+      {
+        hostname: "www.apple.com",
+      },
     ],
   },
 };

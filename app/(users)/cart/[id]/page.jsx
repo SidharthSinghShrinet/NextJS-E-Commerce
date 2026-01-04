@@ -1,7 +1,9 @@
 import React from "react";
 
-function Page() {
-  return <div>page</div>;
+async function Page(props) {
+  const { id } = await props.params;
+  console.log(id);
+  return <div>Page {id}</div>;
 }
 
 export default Page;
