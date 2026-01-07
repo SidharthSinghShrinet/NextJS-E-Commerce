@@ -7,7 +7,7 @@ const userSlice = createSlice({
   },
   reducers: {
     setIsLoggedIn: (state) => {
-      state.isLoggedIn = !isLoggedIn;
+      state.isLoggedIn = !state.isLoggedIn;
     },
   },
 });

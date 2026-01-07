@@ -43,10 +43,12 @@ function Navbar() {
         <VscAccount size={21} />
         <p className="text-md font-semibold text-gray-800">Profile</p>
       </div>
-      <div className="hidden items-center justify-center gap-1 lg:flex">
-        <IoMdHeartEmpty size={21} />
-        <p className="text-md font-semibold text-gray-800">Wishlist</p>
-      </div>
+      <Link href={"/wishlist"}>
+        <div className="hidden items-center justify-center gap-1 lg:flex">
+          <IoMdHeartEmpty size={21} />
+          <p className="text-md font-semibold text-gray-800">Wishlist</p>
+        </div>
+      </Link>
       <Link href={"/cart"}>
         <div className="flex items-center justify-center gap-2">
           <span className="relative inline-flex items-center">

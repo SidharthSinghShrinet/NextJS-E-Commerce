@@ -3,7 +3,7 @@ import { setAllProducts } from "@/libs/features/productSlice";
 import React, { useEffect } from "react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { FaStar } from "react-icons/fa";
+import { FaHeart, FaStar } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 function Page() {

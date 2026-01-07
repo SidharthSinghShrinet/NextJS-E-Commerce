@@ -1,17 +1,28 @@
 "use client";
 import { ProductCarousel } from "@/components/ProductCarousel";
-import { setProduct } from "@/libs/features/productSlice";
+import { setProduct, setWishlistToggle } from "@/libs/features/productSlice";
 import { usePathname } from "next/navigation";
 import React, { useEffect, use } from "react";
+import { FaHeart } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
+import { IoMdHeartEmpty } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 
 function Page(props) {
+  const dispatch = useDispatch();
+  const wishlistToggle = useSelector((state) => state.product.wishlistToggle);
+  function handleAddWishlist(id) {
+    dispatch(setWishlistToggle(!wishlistToggle));
+    console.log("Added to wishlist", id);
+  }
+  function handleRemoveWishlist(id) {
+    dispatch(setWishlistToggle(!wishlistToggle));
+    console.log("Removed from wishlist", id);
+  }
   const { id } = use(props.params);
   const pathname = usePathname();
-  const dispatch = useDispatch();
   const product = useSelector((state) => state.product.product);
-  console.log(product);
+  console.log(wishlistToggle);
   useEffect(() => {
     async function getProduct() {
       // const response = await fetch(`https://dummyjson.com/products/${id}`);
@@ -36,10 +47,26 @@ function Page(props) {
             <ProductCarousel />
           </div>
           <div className="flex w-3/5 flex-col gap-3 border-blue-500 p-2.5">
-            <div className="flex items-center gap-1 text-xs font-medium tracking-wider">
-              <span>Home{pathname.replaceAll("/", ">")}</span>
-              <span className="text-lg font-medium text-gray-600">|</span>
-              <span>More by {product.brand}</span>
+            <div className="flex items-center justify-between gap-1 text-xs font-medium tracking-wider">
+              <div>
+                <span>Home{pathname.replaceAll("/", ">")}</span>
+                <span className="text-lg font-medium text-gray-600">|</span>
+                <span>More by {product.brand}</span>
+              </div>
+              <div className="cursor-pointer">
+                {wishlistToggle ? (
+                  <FaHeart
+                    onClick={() => handleRemoveWishlist(product._id)}
+                    size={15}
+                    color="red"
+                  />
+                ) : (
+                  <IoMdHeartEmpty
+                    onClick={() => handleAddWishlist(product._id)}
+                    size={17}
+                  />
+                )}
+              </div>
             </div>
             <div className="">
               <p className="font-bold text-slate-600">{product.brand}</p>
