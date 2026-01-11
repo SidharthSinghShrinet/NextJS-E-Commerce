@@ -1,28 +1,17 @@
 "use client";
 import { ProductCarousel } from "@/components/ProductCarousel";
-import { setProduct, setWishlistToggle } from "@/libs/features/productSlice";
+import WishlistButton from "@/components/WishlistButton";
+import { setProduct } from "@/libs/features/productSlice";
 import { usePathname } from "next/navigation";
 import React, { useEffect, use } from "react";
-import { FaHeart } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
-import { IoMdHeartEmpty } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 
 function Page(props) {
   const dispatch = useDispatch();
-  const wishlistToggle = useSelector((state) => state.product.wishlistToggle);
-  function handleAddWishlist(id) {
-    dispatch(setWishlistToggle(!wishlistToggle));
-    console.log("Added to wishlist", id);
-  }
-  function handleRemoveWishlist(id) {
-    dispatch(setWishlistToggle(!wishlistToggle));
-    console.log("Removed from wishlist", id);
-  }
   const { id } = use(props.params);
   const pathname = usePathname();
   const product = useSelector((state) => state.product.product);
-  console.log(wishlistToggle);
   useEffect(() => {
     async function getProduct() {
       // const response = await fetch(`https://dummyjson.com/products/${id}`);
@@ -53,20 +42,7 @@ function Page(props) {
                 <span className="text-lg font-medium text-gray-600">|</span>
                 <span>More by {product.brand}</span>
               </div>
-              <div className="cursor-pointer">
-                {wishlistToggle ? (
-                  <FaHeart
-                    onClick={() => handleRemoveWishlist(product._id)}
-                    size={15}
-                    color="red"
-                  />
-                ) : (
-                  <IoMdHeartEmpty
-                    onClick={() => handleAddWishlist(product._id)}
-                    size={17}
-                  />
-                )}
-              </div>
+              <WishlistButton productId={product._id} />
             </div>
             <div className="">
               <p className="font-bold text-slate-600">{product.brand}</p>
