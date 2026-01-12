@@ -62,11 +62,13 @@ function Page() {
           ) : (
             wishlists?.map((wishlist) => (
               <div
-                onClick={() => handleProduct(wishlist.productId._id)}
                 key={wishlist.productId._id}
                 className="flex cursor-pointer items-center justify-between border-b-1 border-gray-300 px-10 py-4"
               >
-                <div className="flex items-center gap-4">
+                <div
+                  onClick={() => handleProduct(wishlist.productId._id)}
+                  className="flex w-full items-center gap-4"
+                >
                   <div className="relative h-24 w-24">
                     <Image
                       src={wishlist.productId.images[0]}
