@@ -16,6 +16,10 @@ const reviewSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    reviewerEmail: {
+      type: String,
+      required: true,
+    },
     productId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
@@ -29,5 +33,7 @@ const reviewSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+reviewSchema.index({ productId: 1, userId: 1 }, { unique: true });
 
 export default mongoose.models.Review || mongoose.model("Review", reviewSchema);

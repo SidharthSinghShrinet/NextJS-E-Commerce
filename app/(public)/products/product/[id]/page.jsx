@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Page(props) {
   const dispatch = useDispatch();
+  const [reviews, setReviews] = React.useState([]);
   const { id } = use(props.params);
   const pathname = usePathname();
   const product = useSelector((state) => state.product.product);
@@ -23,11 +24,19 @@ function Page(props) {
       console.log("Component is mounted successfully");
     }
     getProduct();
+    async function getReviews() {
+      const response = await fetch(`/api/reviews/find/${id}`);
+      const data = await response.json();
+      console.log(data);
+      setReviews(data.data || []);
+    }
+    getReviews();
     return () => {
       dispatch(setProduct(null));
       // console.log("Component is Unmounted successfully");
     };
   }, []);
+  console.log("Reviews:", reviews);
   return (
     <>
       {product?.images[0] ? (
@@ -156,11 +165,11 @@ function Page(props) {
             <span className="my-0.5 border border-neutral-200" />
             <div>
               <p className="text-lg font-bold">Review & Ratings</p>
-              {/* <div className="flex flex-col gap-3 py-5">
-                {product.reviews.length === 0 ? (
-                  <p>Loading...</p>
+              <div className="flex flex-col gap-3 py-5">
+                {reviews?.length === 0 ? (
+                  <p>No reviews yet</p>
                 ) : (
-                  product.reviews.map((review, index) => (
+                  reviews?.map((review, index) => (
                     <div
                       key={index}
                       className="w-full rounded-4xl border border-gray-300 p-10 shadow-xl hover:scale-102 hover:duration-300"
@@ -182,7 +191,7 @@ function Page(props) {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-sm font-semibold text-slate-700">
-                          {review.date.split("T")[0]}
+                          {review.createdAt.split("T")[0]}
                         </span>
                         <span className="text-md font-bold text-gray-600">
                           {review.comment}
@@ -191,7 +200,7 @@ function Page(props) {
                     </div>
                   ))
                 )}
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

@@ -30,15 +30,16 @@ function WishlistButton({ productId }) {
     }
   };
   useEffect(() => {
-    if (!productId) return;
+    if (!productId) {
+      return;
+    }
     async function checkWishlist() {
       const response = await fetch(`/api/wishlist/check/${productId}`);
+      console.log(response);
       const data = await response.json();
-      if (data) {
-        setWishlisted(true);
-      } else {
-        setWishlisted(false);
-      }
+      console.log(data);
+      if (data) setWishlisted(true);
+      else setWishlisted(false);
     }
     checkWishlist();
   }, [productId]);
