@@ -5,6 +5,7 @@ import ApiError from "@/utils/ApiError";
 import ApiResponse from "@/utils/ApiResponse";
 import asyncHandler from "@/utils/asyncHandler";
 import { currentUser } from "@clerk/nextjs/server";
+import productModel from "@/models/product.model";
 
 export const GET = asyncHandler(async (request, context) => {
   await connectDB();

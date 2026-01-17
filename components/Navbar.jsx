@@ -17,12 +17,11 @@ import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import userModel from "@/models/user.model";
 import cartModel from "@/models/cart.model";
-import ApiError from "@/utils/ApiError";
 import connectDB from "@/libs/db";
 
 async function Navbar() {
   await connectDB();
-  const { userId: clerkId } = auth();
+  const { userId: clerkId } = await auth();
   let cartCount = 0;
   if (clerkId) {
     const user = await userModel.findOne({ clerkId }).select("_id");
@@ -30,9 +29,10 @@ async function Navbar() {
       const cart = await cartModel
         .findOne({ userId: user._id })
         .select("items");
-      cartCount = cart?.items?.length || 0;
+      cartCount = cart?.items.length || 0;
     }
   }
+  console.log("cartCount:", cartCount);
   return (
     <div className="flex h-19 w-full items-center justify-evenly border-b-[0.5px] border-gray-200">
       <div className="relative w-16 lg:w-17">
