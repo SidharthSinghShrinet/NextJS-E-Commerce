@@ -13,6 +13,20 @@ function Page(props) {
   const { id } = use(props.params);
   const pathname = usePathname();
   const product = useSelector((state) => state.product.product);
+  async function handleAddToCart(productId) {
+    const response = await fetch("http://localhost:3000/api/carts/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId,
+      }),
+    });
+    console.log(response);
+    const data = await response.json();
+    console.log(data);
+  }
   useEffect(() => {
     async function getProduct() {
       // const response = await fetch(`https://dummyjson.com/products/${id}`);
@@ -90,7 +104,10 @@ function Page(props) {
               <button className="w-40 cursor-pointer rounded-lg bg-green-400 p-3 text-lg font-medium tracking-wide text-white hover:bg-green-600">
                 Buy Now
               </button>
-              <button className="w-40 cursor-pointer rounded-lg bg-orange-500 p-3 text-lg font-medium tracking-wide hover:bg-orange-600">
+              <button
+                className="w-40 cursor-pointer rounded-lg bg-orange-500 p-3 text-lg font-medium tracking-wide hover:bg-orange-600"
+                onClick={() => handleAddToCart(product._id)}
+              >
                 Add to Cart
               </button>
             </div>

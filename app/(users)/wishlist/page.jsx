@@ -16,7 +16,7 @@ function Page() {
     );
     const data = await response.json();
     console.log(data);
-    setWishlists(data);
+    setWishlists(data ?? []);
   };
   const removeWishlist = async (id) => {
     console.log("Remove wishlist:", id);
@@ -43,7 +43,7 @@ function Page() {
         "http://localhost:3000/api/wishlist/findwishlists",
       );
       const data = await response.json();
-      setWishlists(data);
+      setWishlists(data ?? []);
     }
     getWishlists();
   }, []);
@@ -57,7 +57,7 @@ function Page() {
         </div>
         <div className="border-[1px] border-gray-300" />
         <div className="flex flex-col gap-3">
-          {wishlists.length === 0 ? (
+          {wishlists?.length === 0 ? (
             <h1>Loading...</h1>
           ) : (
             wishlists?.map((wishlist) => (

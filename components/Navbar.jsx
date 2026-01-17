@@ -14,8 +14,25 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import userModel from "@/models/user.model";
+import cartModel from "@/models/cart.model";
+import ApiError from "@/utils/ApiError";
+import connectDB from "@/libs/db";
 
-function Navbar() {
+async function Navbar() {
+  await connectDB();
+  const { userId: clerkId } = auth();
+  let cartCount = 0;
+  if (clerkId) {
+    const user = await userModel.findOne({ clerkId }).select("_id");
+    if (user) {
+      const cart = await cartModel
+        .findOne({ userId: user._id })
+        .select("items");
+      cartCount = cart?.items?.length || 0;
+    }
+  }
   return (
     <div className="flex h-19 w-full items-center justify-evenly border-b-[0.5px] border-gray-200">
       <div className="relative w-16 lg:w-17">
@@ -54,7 +71,7 @@ function Navbar() {
           <span className="relative inline-flex items-center">
             <IoCartOutline size={21} />
             <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-              0
+              {cartCount}
             </span>
           </span>
           <p className="text-md hidden font-semibold text-gray-800 lg:flex">
