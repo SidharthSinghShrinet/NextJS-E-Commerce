@@ -1,9 +1,14 @@
 "use client";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import WishlistButton from "@/components/WishlistButton";
+import {
+  incrementCartItemsCount,
+  setCartItemsCount,
+} from "@/libs/features/cartSlice";
 import { setProduct } from "@/libs/features/productSlice";
 import { usePathname } from "next/navigation";
 import React, { useEffect, use } from "react";
+import toast from "react-hot-toast";
 import { FaStar } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,9 +28,13 @@ function Page(props) {
         productId,
       }),
     });
-    console.log(response);
-    const data = await response.json();
-    console.log(data);
+    if (response.ok) {
+      const { data } = await response.json();
+      dispatch(setCartItemsCount(data.items.length));
+      toast.success("Product added to cart successfully");
+    } else {
+      toast.error("Failed to add product to cart");
+    }
   }
   useEffect(() => {
     async function getProduct() {

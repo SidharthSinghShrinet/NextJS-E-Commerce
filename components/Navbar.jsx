@@ -1,38 +1,53 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "@/public/DesireMart.png";
 import { VscAccount } from "react-icons/vsc";
 import { IoCartOutline } from "react-icons/io5";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineLightMode } from "react-icons/md";
+import { setCartItemsCount } from "@/libs/features/cartSlice";
 import {
   SignInButton,
   SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
 import Link from "next/link";
-import { auth } from "@clerk/nextjs/server";
-import userModel from "@/models/user.model";
-import cartModel from "@/models/cart.model";
-import connectDB from "@/libs/db";
+import { useDispatch, useSelector } from "react-redux";
 
-async function Navbar() {
-  await connectDB();
-  const { userId: clerkId } = await auth();
-  let cartCount = 0;
-  if (clerkId) {
-    const user = await userModel.findOne({ clerkId }).select("_id");
-    if (user) {
-      const cart = await cartModel
-        .findOne({ userId: user._id })
-        .select("items");
-      cartCount = cart?.items.length || 0;
+function Navbar() {
+  const dispatch = useDispatch();
+  const { isSignedIn } = useUser();
+  const cartItemsCount = useSelector((state) => state.cart.cartItemsCount);
+
+  useEffect(() => {
+    if (!isSignedIn) {
+      dispatch(setCartItemsCount(0));
+      return;
     }
-  }
-  console.log("cartCount:", cartCount);
+
+    const getCartItemsCount = async () => {
+      try {
+        const response = await fetch("/api/carts/findcarts");
+
+        if (!response.ok) {
+          dispatch(setCartItemsCount(0));
+          return;
+        }
+
+        const { data } = await response.json();
+        dispatch(setCartItemsCount(data?.items?.length || 0));
+      } catch (error) {
+        dispatch(setCartItemsCount(0));
+      }
+    };
+
+    getCartItemsCount();
+  }, [isSignedIn, dispatch]);
   return (
     <div className="flex h-19 w-full items-center justify-evenly border-b-[0.5px] border-gray-200">
       <div className="relative w-16 lg:w-17">
@@ -71,7 +86,7 @@ async function Navbar() {
           <span className="relative inline-flex items-center">
             <IoCartOutline size={21} />
             <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-              {cartCount}
+              {cartItemsCount || 0}
             </span>
           </span>
           <p className="text-md hidden font-semibold text-gray-800 lg:flex">

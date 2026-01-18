@@ -3,16 +3,32 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { TbOctagonMinus, TbOctagonPlus } from "react-icons/tb";
+import { MdDelete } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setCartItemsCount } from "@/libs/features/cartSlice";
 
 function Page() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [cart, setCart] = React.useState([]);
+  console.log("Total no. of items in cart:", cart.length);
   function handleProduct(id) {
     console.log(id);
     router.push(`/products/product/${id}`);
   }
-  function handleSaveForLater() {
-    console.log("Save for later");
+  async function handleSaveForLater(productId) {
+    const response = await fetch("http://localhost:3000/api/carts/savelater", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ productId }),
+    });
+    console.log(response);
+    const { data } = await response.json();
+    console.log(data);
+    dispatch(setCartItemsCount(data.items.length));
+    setCart(data?.items ?? []);
   }
   async function handleRemoveFromCart(productId) {
     const response = await fetch("http://localhost:3000/api/carts/remove", {
@@ -23,9 +39,55 @@ function Page() {
       body: JSON.stringify({ productId }),
     });
     console.log(response);
+    const { data } = await response.json();
+    console.log(data);
+    dispatch(setCartItemsCount(data.items.length));
+    setCart(data?.items ?? []);
+  }
+  async function handleIncreaseQuantity(productId) {
+    const response = await fetch(
+      "http://localhost:3000/api/carts/increasequantity",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId }),
+      },
+    );
+    console.log(response);
     const data = await response.json();
-    // console.log(data);
+    console.log(data);
     setCart(data?.data?.items ?? []);
+  }
+  async function handleDecreaseQuantity(productId) {
+    const response = await fetch(
+      "http://localhost:3000/api/carts/decreasequantity",
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId }),
+      },
+    );
+    console.log(response);
+    const data = await response.json();
+    console.log(data);
+    setCart(data?.data?.items ?? []);
+  }
+  async function handleClearAll() {
+    const response = await fetch("http://localhost:3000/api/carts/clear-all", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      console.log("Cleared all");
+      dispatch(setCartItemsCount(0));
+      setCart([]);
+    }
   }
   useEffect(() => {
     async function getCart() {
@@ -43,18 +105,21 @@ function Page() {
     }
     getCart();
   }, []);
-  console.log("Cart:", cart);
   return (
     <div className="flex min-h-screen w-full justify-center">
       <div className="flex h-full w-[80%] justify-between">
         <div className="h-full w-[67%] bg-white shadow-2xl">
           <div className="flex items-center justify-between border-b-1 border-gray-300 px-5 py-3">
             <span className="text-2xl font-semibold">Shopping Cart</span>
+            <MdDelete
+              className="text-2xl font-semibold text-red-500"
+              onClick={() => handleClearAll()}
+            />
           </div>
           <div className="h-full w-full">
             {cart?.length === 0 ? (
               <div className="flex h-full w-full items-center px-5">
-                <span>Your cart is empty</span>
+                <span>Loading...</span>
               </div>
             ) : (
               cart?.map((item) => (
@@ -73,7 +138,7 @@ function Page() {
                           alt={item.title}
                           fill={true}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="absolute object-cover"
+                          className="absolute object-contain"
                           loading="lazy"
                         />
                       </div>
@@ -115,7 +180,10 @@ function Page() {
                   <div className="flex h-10 w-full items-center gap-[13px]">
                     <div className="flex items-center gap-2.5">
                       <div className="cursor-pointer">
-                        <TbOctagonPlus size={21} />
+                        <TbOctagonPlus
+                          size={21}
+                          onClick={() => handleIncreaseQuantity(item.productId)}
+                        />
                       </div>
                       <div className="border-2 border-dashed border-gray-500 px-3 shadow-2xl select-none">
                         <span className="text-lg font-semibold">
@@ -123,12 +191,15 @@ function Page() {
                         </span>
                       </div>
                       <div className="cursor-pointer">
-                        <TbOctagonMinus size={21} />
+                        <TbOctagonMinus
+                          size={21}
+                          onClick={() => handleDecreaseQuantity(item.productId)}
+                        />
                       </div>
                     </div>
                     <div className="flex gap-4">
                       <button
-                        onClick={() => handleSaveForLater()}
+                        onClick={() => handleSaveForLater(item.productId)}
                         className="cursor-pointer font-bold"
                       >
                         Save for later
