@@ -6,12 +6,13 @@ import { TbOctagonMinus, TbOctagonPlus } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { setCartItemsCount } from "@/libs/features/cartSlice";
+import CartPricing from "@/components/CartPricing";
 
 function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [cart, setCart] = React.useState([]);
-  console.log("Total no. of items in cart:", cart.length);
+  // console.log("Total no. of items in cart:", cart.length);
   function handleProduct(id) {
     console.log(id);
     router.push(`/products/product/${id}`);
@@ -60,7 +61,7 @@ function Page() {
     console.log(data);
     setCart(data?.data?.items ?? []);
   }
-  async function handleDecreaseQuantity(productId) {
+  async function handleDecreaseQuantity(productId, quantity) {
     const response = await fetch(
       "http://localhost:3000/api/carts/decreasequantity",
       {
@@ -71,11 +72,12 @@ function Page() {
         body: JSON.stringify({ productId }),
       },
     );
-    console.log(response);
-    const data = await response.json();
-    console.log(data);
-    setCart(data?.data?.items ?? []);
+    const { data } = await response.json();
+    // console.log(data);
+    dispatch(setCartItemsCount(data.items.length));
+    setCart(data?.items ?? []);
   }
+  // console.log("Cart Frontend:", cart);
   async function handleClearAll() {
     const response = await fetch("http://localhost:3000/api/carts/clear-all", {
       method: "DELETE",
@@ -217,8 +219,8 @@ function Page() {
             )}
           </div>
         </div>
-        <div className="h-96 w-[32%] border-2 border-blue-500">
-          Price Details Section
+        <div className="flex h-72 w-[28%] flex-col justify-between border-2 border-blue-500 p-3">
+          <CartPricing cart={cart} />
         </div>
       </div>
     </div>
