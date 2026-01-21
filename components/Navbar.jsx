@@ -2,9 +2,10 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
 import logo from "@/public/DesireMart.png";
-import { VscAccount } from "react-icons/vsc";
 import { IoCartOutline } from "react-icons/io5";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { SlBadge } from "react-icons/sl";
+import { GoGift } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineLightMode } from "react-icons/md";
 import { setCartItemsCount } from "@/libs/features/cartSlice";
@@ -18,6 +19,7 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
+import { GiRibbonMedal } from "react-icons/gi";
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -71,20 +73,28 @@ function Navbar() {
           placeholder="Search for Products, Brands and More"
         />
       </div>
-      <div className="hidden items-center justify-center gap-1 lg:flex">
-        <VscAccount size={21} />
-        <p className="text-md font-semibold text-gray-800">Profile</p>
-      </div>
+      <Link href={"/badge"}>
+        <div className="hidden items-center justify-center gap-1 lg:flex">
+          <SlBadge size={20} />
+          <p className="text-md font-semibold text-gray-800">Badge</p>
+        </div>
+      </Link>
       <Link href={"/wishlist"}>
         <div className="hidden items-center justify-center gap-1 lg:flex">
-          <IoMdHeartEmpty size={21} />
+          <IoMdHeartEmpty size={20} />
           <p className="text-md font-semibold text-gray-800">Wishlist</p>
+        </div>
+      </Link>
+      <Link href={"/orders"}>
+        <div className="hidden items-center justify-center gap-1 lg:flex">
+          <GoGift size={20} />
+          <p className="text-md font-semibold text-gray-800">Orders</p>
         </div>
       </Link>
       <Link href={"/cart"}>
         <div className="flex items-center justify-center gap-2">
           <span className="relative inline-flex items-center">
-            <IoCartOutline size={21} />
+            <IoCartOutline size={20} />
             <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
               {cartItemsCount || 0}
             </span>
@@ -95,7 +105,7 @@ function Navbar() {
         </div>
       </Link>
       <div className="flex items-center justify-center">
-        <MdOutlineLightMode size={21} />
+        <MdOutlineLightMode size={20} />
       </div>
       <header className="flex h-16 items-center justify-end gap-4 p-4">
         <SignedOut>

@@ -110,11 +110,11 @@ function Page(props) {
               </div>
             </div>
             <div className="flex w-full gap-2">
-              <button className="w-40 cursor-pointer rounded-lg bg-green-400 p-3 text-lg font-medium tracking-wide text-white hover:bg-green-600">
+              <button className="w-40 cursor-pointer rounded-sm bg-green-400 p-3 text-lg font-medium tracking-wide text-white hover:bg-green-600">
                 Buy Now
               </button>
               <button
-                className="w-40 cursor-pointer rounded-lg bg-orange-500 p-3 text-lg font-medium tracking-wide hover:bg-orange-600"
+                className="w-40 cursor-pointer rounded-sm bg-pink-500 p-3 text-lg font-medium tracking-wide hover:bg-pink-600"
                 onClick={() => handleAddToCart(product._id)}
               >
                 Add to Cart

@@ -20,6 +20,9 @@ const nextConfig = {
       {
         hostname: "www.apple.com",
       },
+      {
+        hostname: "img.clerk.com",
+      },
     ],
   },
 };

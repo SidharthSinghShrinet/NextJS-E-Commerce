@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { setCartItemsCount } from "@/libs/features/cartSlice";
 import CartPricing from "@/components/CartPricing";
+import { BiSolidCheckShield } from "react-icons/bi";
 
 function Page() {
   const dispatch = useDispatch();
@@ -114,7 +115,7 @@ function Page() {
           <div className="flex items-center justify-between border-b-1 border-gray-300 px-5 py-3">
             <span className="text-2xl font-semibold">Shopping Cart</span>
             <MdDelete
-              className="text-2xl font-semibold text-red-500"
+              className="text-2xl font-semibold text-pink-500"
               onClick={() => handleClearAll()}
             />
           </div>
@@ -156,7 +157,7 @@ function Page() {
                         </span>
                         <div className="flex items-center gap-1.5">
                           <span className="text-md font-bold text-green-600">
-                            $
+                            ₹
                             {
                               +(
                                 item.price -
@@ -219,8 +220,14 @@ function Page() {
             )}
           </div>
         </div>
-        <div className="flex h-72 w-[28%] flex-col justify-between border-2 border-blue-500 p-3">
+        <div className="flex h-fit w-[28%] flex-col justify-between bg-white">
           <CartPricing cart={cart} />
+          <div className="flex items-center gap-2 p-3">
+            <BiSolidCheckShield size={50} className="text-gray-500" />
+            <span className="text-[13.5px] font-semibold text-gray-500">
+              Safe and Secure Payments.Easy returns.100% Authentic products.
+            </span>
+          </div>
         </div>
       </div>
     </div>
