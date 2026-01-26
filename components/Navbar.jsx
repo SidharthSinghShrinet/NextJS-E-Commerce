@@ -57,7 +57,7 @@ function Navbar() {
           src={logo}
           alt="DesiredMart - Logo of Website"
           loading="lazy"
-          className="border"
+          // className="border"
         />
       </div>
       <div className="relative w-1/2">

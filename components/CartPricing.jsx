@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 function CartPricing({ cart = [] }) {
   const PLATFORM_FEE = 23;
@@ -49,12 +50,14 @@ function CartPricing({ cart = [] }) {
         </span>
       </div>
       <div className="flex justify-center bg-pink-500 text-white">
-        <button
-          disabled={!cart.length}
-          className="text-md py-1.5 font-bold tracking-wider"
-        >
-          Place Order
-        </button>
+        <Link href={"/checkout/address"}>
+          <button
+            disabled={!cart.length}
+            className="text-md cursor-pointer py-1.5 font-bold tracking-wider"
+          >
+            Place Order
+          </button>
+        </Link>
       </div>
       <div>
         <span className="font-semibold text-green-500">
