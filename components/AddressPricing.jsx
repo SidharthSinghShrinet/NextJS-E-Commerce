@@ -1,9 +1,8 @@
 import Link from "next/link";
 import React from "react";
-function CartPricing({ cart = [] }) {
+function AddressPricing({ cart = [] }) {
   const PLATFORM_FEE = 23;
   const COUPON_DISCOUNT = 92;
-  console.table(cart);
   const Total_MRP = cart.reduce(
     (acc, curr) => acc + curr.price * curr.quantity,
     0,
@@ -50,12 +49,12 @@ function CartPricing({ cart = [] }) {
         </span>
       </div>
       <Link href={"/checkout/address"}>
-        <div className="flex justify-center bg-pink-500 text-white">
+        <div className="flex justify-center bg-blue-500 text-white">
           <button
             disabled={!cart.length}
             className="text-md cursor-pointer py-1.5 font-bold tracking-wider"
           >
-            Place Order
+            Continue to Payment
           </button>
         </div>
       </Link>
@@ -68,4 +67,4 @@ function CartPricing({ cart = [] }) {
   );
 }
 
-export default CartPricing;
+export default AddressPricing;

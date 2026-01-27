@@ -4,15 +4,15 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { TbOctagonMinus, TbOctagonPlus } from "react-icons/tb";
 import { MdDelete } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import { setCartItemsCount } from "@/libs/features/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCartItemsCount, setCart } from "@/libs/features/cartSlice";
 import CartPricing from "@/components/CartPricing";
 import { BiSolidCheckShield } from "react-icons/bi";
 
 function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [cart, setCart] = React.useState([]);
+  const cart = useSelector((state) => state.cart.cart);
   // console.log("Total no. of items in cart:", cart.length);
   function handleProduct(id) {
     console.log(id);
@@ -30,7 +30,7 @@ function Page() {
     const { data } = await response.json();
     console.log(data);
     dispatch(setCartItemsCount(data.items.length));
-    setCart(data?.items ?? []);
+    dispatch(setCart(data?.items ?? []));
   }
   async function handleRemoveFromCart(productId) {
     const response = await fetch("http://localhost:3000/api/carts/remove", {
@@ -44,7 +44,7 @@ function Page() {
     const { data } = await response.json();
     console.log(data);
     dispatch(setCartItemsCount(data.items.length));
-    setCart(data?.items ?? []);
+    dispatch(setCart(data?.items ?? []));
   }
   async function handleIncreaseQuantity(productId) {
     const response = await fetch(
@@ -60,9 +60,9 @@ function Page() {
     console.log(response);
     const data = await response.json();
     console.log(data);
-    setCart(data?.data?.items ?? []);
+    dispatch(setCart(data?.data?.items ?? []));
   }
-  async function handleDecreaseQuantity(productId, quantity) {
+  async function handleDecreaseQuantity(productId) {
     const response = await fetch(
       "http://localhost:3000/api/carts/decreasequantity",
       {
@@ -76,7 +76,7 @@ function Page() {
     const { data } = await response.json();
     // console.log(data);
     dispatch(setCartItemsCount(data.items.length));
-    setCart(data?.items ?? []);
+    dispatch(setCart(data?.items ?? []));
   }
   // console.log("Cart Frontend:", cart);
   async function handleClearAll() {
@@ -89,7 +89,7 @@ function Page() {
     if (response.ok) {
       console.log("Cleared all");
       dispatch(setCartItemsCount(0));
-      setCart([]);
+      dispatch(setCart([]));
     }
   }
   useEffect(() => {
@@ -105,6 +105,7 @@ function Page() {
       );
       const data = await response.json();
       setCart(data?.data?.items ?? []);
+      dispatch(setCart(data?.data?.items ?? []));
     }
     getCart();
   }, []);
