@@ -1,6 +1,8 @@
 import Link from "next/link";
 import React from "react";
-function AddressPricing({ cart = [] }) {
+import { useSelector } from "react-redux";
+function AddressPricing() {
+  const cart = useSelector((state) => state.cart.cart);
   const PLATFORM_FEE = 23;
   const COUPON_DISCOUNT = 92;
   const Total_MRP = cart.reduce(
@@ -49,7 +51,7 @@ function AddressPricing({ cart = [] }) {
         </span>
       </div>
       <Link href={"/checkout/address"}>
-        <div className="flex justify-center bg-blue-500 text-white">
+        <div className="flex justify-center bg-blue-600 text-white">
           <button
             disabled={!cart.length}
             className="text-md cursor-pointer py-1.5 font-bold tracking-wider"
