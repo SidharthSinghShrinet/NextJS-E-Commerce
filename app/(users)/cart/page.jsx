@@ -104,7 +104,7 @@ function Page() {
         },
       );
       const data = await response.json();
-      setCart(data?.data?.items ?? []);
+      // setCart(data?.data?.items ?? []);
       dispatch(setCart(data?.data?.items ?? []));
     }
     getCart();

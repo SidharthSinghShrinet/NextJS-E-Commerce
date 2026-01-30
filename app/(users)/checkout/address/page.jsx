@@ -4,18 +4,43 @@ import { BiSolidCheckShield } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import AddressPricing from "@/components/AddressPricing";
 import { RadioGroupChoiceCard } from "@/components/RadioGroupChoiceCard";
-import { setAddress } from "@/libs/features/addressSlice";
+import {
+  setAddress,
+  setEditAddressDetails,
+} from "@/libs/features/addressSlice";
 import { TbHomePlus } from "react-icons/tb";
 // Import your new AddressForm component (we'll create this below)
 import AddressForm from "@/components/AddressForm";
+import { setCart } from "@/libs/features/cartSlice";
 
 function Page() {
   const dispatch = useDispatch();
   const [isFormOpen, setIsFormOpen] = useState(false); // State to control visibility
 
   function handleToggleForm() {
+    console.log("Toggle form:", isFormOpen);
     setIsFormOpen(!isFormOpen);
+    if (isFormOpen) {
+      dispatch(setEditAddressDetails({}));
+    }
   }
+
+  useEffect(() => {
+    async function getCart() {
+      const response = await fetch(
+        "http://localhost:3000/api/carts/findcarts",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const data = await response.json();
+      dispatch(setCart(data?.data?.items ?? []));
+    }
+    getCart();
+  }, []);
 
   useEffect(() => {
     async function getAddress() {
@@ -33,13 +58,13 @@ function Page() {
   }, [dispatch]);
 
   return (
-    <div className="relative flex min-h-screen w-full justify-center bg-gray-50">
+    <div className="relative flex max-h-screen w-full justify-center bg-gray-50">
       {/* 1. The Main Content Container */}
       <div
         className={`flex h-full w-[80%] justify-between transition-all duration-300 ${isFormOpen ? "pointer-events-none blur-sm" : ""}`}
       >
         <div className="h-full w-[67%] bg-white shadow-2xl">
-          <div className="flex items-center justify-between border-b border-gray-300 bg-blue-600 px-3 py-3">
+          <div className="flex items-center justify-between border-b border-gray-300 bg-blue-600 px-3.5 py-3">
             <span className="text-2xl font-semibold text-white">
               Delivery Address
             </span>
@@ -53,12 +78,12 @@ function Page() {
               </span>
             </div>
           </div>
-          <div className="h-full w-full overflow-y-auto scroll-smooth">
-            <RadioGroupChoiceCard />
+          <div className="max-h-[82.5vh] w-full overflow-y-auto scroll-smooth">
+            <RadioGroupChoiceCard onClose={handleToggleForm} />
           </div>
         </div>
 
-        <div className="flex h-fit w-[28%] flex-col justify-between bg-white shadow-md">
+        <div className="flex h-fit w-[28%] flex-col justify-between bg-white">
           <AddressPricing />
           <div className="flex items-center gap-2 p-3">
             <BiSolidCheckShield size={50} className="text-gray-500" />

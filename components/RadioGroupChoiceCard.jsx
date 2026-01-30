@@ -7,34 +7,54 @@ import {
 } from "@/components/ui/field";
 import { FiEdit } from "react-icons/fi";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { setAddress, setSelectedAddress } from "@/libs/features/addressSlice";
+import {
+  setAddress,
+  setEditAddressDetails,
+  setSelectedAddress,
+} from "@/libs/features/addressSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { MdDeleteOutline } from "react-icons/md";
-export function RadioGroupChoiceCard() {
+import toast from "react-hot-toast";
+export function RadioGroupChoiceCard({ onClose }) {
   const dispatch = useDispatch();
   const selectedAddress = useSelector((state) => state.address.selectedAddress);
   // console.log("Selected Address:", selectedAddress);
   const address = useSelector((state) => state.address.address);
   // console.log("Address is printed from the Radio Group:", address);
-  function handleEdit(addressId) {
-    console.log("Edit address:", addressId);
+  async function handleGetEditingDetails(addressId) {
+    const response = await fetch(
+      "http://localhost:3000/api/address/getaddress",
+      {
+        method: "POST",
+        body: JSON.stringify({ addressId }),
+      },
+    );
+    const { data } = await response.json();
+    dispatch(setEditAddressDetails(data));
+    onClose();
   }
   async function handleDelete(addressId) {
-    const response = await fetch("http://localhost:3000/api/address/delete", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ addressId }),
-    });
-    const { data } = await response.json();
-    dispatch(setAddress(data));
+    try {
+      const response = await fetch("http://localhost:3000/api/address/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ addressId }),
+      });
+      const { data } = await response.json();
+      dispatch(setAddress(data));
+      toast.success("Address deleted successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete address");
+    }
   }
   return (
     <>
       <RadioGroup
         defaultValue={selectedAddress}
-        className="h-fit w-full bg-white shadow-2xs"
+        className="h-full w-full bg-white shadow-2xs"
       >
         {address.length === 0 ? (
           <p>Loading...</p>
@@ -60,7 +80,7 @@ export function RadioGroupChoiceCard() {
                     <span className="flex gap-2.5">
                       <FiEdit
                         size={17.5}
-                        onClick={() => handleEdit(addressItem._id)}
+                        onClick={() => handleGetEditingDetails(addressItem._id)}
                         className="text-blue-600"
                       />
                       <MdDeleteOutline

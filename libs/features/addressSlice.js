@@ -5,6 +5,7 @@ const addressSlice = createSlice({
   initialState: {
     address: [],
     selectedAddress: "",
+    editAddressDetails: {},
   },
   reducers: {
     setAddress: (state, action) => {
@@ -13,8 +14,12 @@ const addressSlice = createSlice({
     setSelectedAddress: (state, action) => {
       state.selectedAddress = action.payload;
     },
+    setEditAddressDetails: (state, action) => {
+      state.editAddressDetails = action.payload;
+    },
   },
 });
 
-export const { setAddress, setSelectedAddress } = addressSlice.actions;
+export const { setAddress, setSelectedAddress, setEditAddressDetails } =
+  addressSlice.actions;
 export default addressSlice.reducer;
