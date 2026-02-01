@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCartItemsCount, setCart } from "@/libs/features/cartSlice";
 import CartPricing from "@/components/CartPricing";
 import { BiSolidCheckShield } from "react-icons/bi";
+import toast from "react-hot-toast";
 
 function Page() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function Page() {
     console.log(data);
     dispatch(setCartItemsCount(data.items.length));
     dispatch(setCart(data?.items ?? []));
+    toast.success("Product moved to wishlist successfully");
   }
   async function handleRemoveFromCart(productId) {
     const response = await fetch("http://localhost:3000/api/carts/remove", {

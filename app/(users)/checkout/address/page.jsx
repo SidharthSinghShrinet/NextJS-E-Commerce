@@ -58,7 +58,7 @@ function Page() {
   }, [dispatch]);
 
   return (
-    <div className="relative flex max-h-screen w-full justify-center bg-gray-50">
+    <div className="relative flex max-h-screen w-full justify-center bg-white">
       {/* 1. The Main Content Container */}
       <div
         className={`flex h-full w-[80%] justify-between transition-all duration-300 ${isFormOpen ? "pointer-events-none blur-sm" : ""}`}
@@ -83,11 +83,11 @@ function Page() {
           </div>
         </div>
 
-        <div className="flex h-fit w-[28%] flex-col justify-between bg-white">
+        <div className="bg flex h-fit w-[28%] flex-col justify-between bg-white">
           <AddressPricing />
           <div className="flex items-center gap-2 p-3">
             <BiSolidCheckShield size={50} className="text-gray-500" />
-            <span className="text-[13.5px] font-semibold text-gray-500">
+            <span className="text-[13.2px] font-semibold text-gray-500">
               Safe and Secure Payments. Easy returns. 100% Authentic products.
             </span>
           </div>

@@ -1,8 +1,11 @@
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 function AddressPricing() {
+  const router = useRouter();
   const cart = useSelector((state) => state.cart.cart);
+  const selectedAddress = useSelector((state) => state.address.selectedAddress);
   const PLATFORM_FEE = 23;
   const COUPON_DISCOUNT = 92;
   const Total_MRP = cart.reduce(
@@ -21,10 +24,31 @@ function AddressPricing() {
 
   const TotalSaving = Total_MRP - TotalAmount;
   // console.log(TotalAmount);
+  async function handleCreateOrder() {
+    if (cart.length === 0 || !selectedAddress) {
+      toast.error("Missing items or address. Please check and try again.");
+      return;
+    }
+    const response = await fetch("http://localhost:3000/api/orders/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        addressId: selectedAddress,
+      }),
+    });
+    console.log(response);
+    const data = await response.json();
+    console.log(data);
+    // if (data.success) {
+    //   router.push(`/checkout/payment?orderId=${data?.data?._id}`);
+    // }
+  }
   return (
     <div className="flex flex-col gap-3 p-3 shadow-xl shadow-neutral-300">
       <span className="text-[13px] font-bold text-gray-600">
-        PRICE DETAILS (${cart.length} item)
+        PRICE DETAILS ({cart.length} item)
       </span>
       <div className="flex flex-col gap-1">
         <div className="flex justify-between">
@@ -50,16 +74,16 @@ function AddressPricing() {
           ₹{TotalAmount.toFixed(2)}
         </span>
       </div>
-      <Link href={"/checkout/address"}>
-        <div className="flex justify-center bg-blue-600 text-white">
-          <button
-            disabled={!cart.length}
-            className="text-md cursor-pointer py-1.5 font-bold tracking-wider"
-          >
-            Continue to Payment
-          </button>
-        </div>
-      </Link>
+      <div className="flex justify-center bg-blue-600 text-white">
+        <button
+          onClick={() => handleCreateOrder()}
+          disabled={!cart.length}
+          className="text-md cursor-pointer py-1.5 font-bold tracking-wider"
+        >
+          Continue to Payment
+        </button>
+      </div>
+
       <div>
         <span className="font-semibold text-green-500">
           You will save ₹{TotalSaving.toFixed(2)} on this order
