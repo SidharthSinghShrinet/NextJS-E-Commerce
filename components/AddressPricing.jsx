@@ -41,9 +41,12 @@ function AddressPricing() {
     console.log(response);
     const data = await response.json();
     console.log(data);
-    // if (data.success) {
-    //   router.push(`/checkout/payment?orderId=${data?.data?._id}`);
-    // }
+    if (data.success) {
+      // toast.success(`${data.message}`);
+      router.push(`/checkout/payment-method?orderId=${data?.data?._id}`);
+    } else {
+      // toast.error(`${data.message}`);
+    }
   }
   return (
     <div className="flex flex-col gap-3 p-3 shadow-xl shadow-neutral-300">

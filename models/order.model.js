@@ -31,6 +31,7 @@ const orderSchema = new mongoose.Schema(
             type: Number,
             required: true,
           },
+          _id: false,
         },
       ],
       required: true,
@@ -92,7 +93,7 @@ const orderSchema = new mongoose.Schema(
     paymentIntentId: {
       type: String,
     },
-    totalAmount: {
+    totalAmountInPaise: {
       type: Number,
       required: true,
       min: 0,

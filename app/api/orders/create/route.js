@@ -29,28 +29,24 @@ export const POST = asyncHandler(async (request, context) => {
   };
   const cart = await cartModel.findOne({ userId }).populate("items.productId");
   if (!cart || cart.items.length === 0) {
-    throw new ApiError(404, "Cart is empty");
+    throw new ApiError(400, "Cart is empty");
   }
-  const items = cart.items.map((item) => ({
-    productId: item.productId._id,
-    quantity: item.quantity,
-    price: item.productId.price,
-    image: item.productId.images?.[0] || "",
-    title: item.productId.title,
-  }));
-  // const items = cart.items.map(async (item) => {
-  //   const product = await productModel.findById(item.productId._id);
-  //   if (!product) {
-  //     throw new ApiError(404, "Product not found");
-  //   }
-  //   return {
-  //     productId: product._id,
-  //     quantity: item.quantity,
-  //     price: product.price,
-  //     image: product.images?.[0] || "",
-  //     title: product.title,
-  //   };
-  // });
+  const items = [];
+  for (const item of cart.items) {
+    console.log(item);
+    if (!item.productId || item.productId.stock < item.quantity) {
+      throw new ApiError(404, "Product not found or out of stock");
+    }
+    const product = item.productId;
+    items.push({
+      productId: product._id,
+      quantity: item.quantity,
+      price: product.price,
+      image: product.images?.[0] || "",
+      title: product.title,
+    });
+  }
+  console.log("Items are:", items);
   const Total_MRP = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0,
@@ -64,47 +60,48 @@ export const POST = asyncHandler(async (request, context) => {
   );
   const PLATFORM_FEE = 23;
   const COUPON_DISCOUNT = 92;
-  const totalAmount = Math.max(
-    Number(
-      Total_MRP - DISCOUNT_ON_MRP - COUPON_DISCOUNT + PLATFORM_FEE,
-    ).toFixed(2),
+  const totalAmountInPaise = Math.max(
+    Math.round(
+      (Total_MRP - DISCOUNT_ON_MRP - COUPON_DISCOUNT + PLATFORM_FEE) * 100,
+    ),
     0,
   );
+  // console.log("Total amount is:", totalAmount);
   const pricing = {
     totalMRP: Total_MRP,
     discountOnMRP: DISCOUNT_ON_MRP,
     platformFee: PLATFORM_FEE,
     couponDiscount: COUPON_DISCOUNT,
   };
-  // const existingOrder = await orderModel.findOne({
-  //   userId,
-  //   paymentStatus: "pending",
-  //   orderStatus: "created",
-  // });
-  // if (existingOrder) {
-  //   await orderModel.updateOne(
-  //     { _id: existingOrder._id },
-  //     {
-  //       orderStatus: "cancelled",
-  //       paymentStatus: "failed",
-  //     },
-  //   );
-  // }
-  // const newOrder = await orderModel.create({
-  //   userId,
-  //   items,
-  //   shippingAddress,
-  //   pricing,
-  //   totalAmount,
-  // });
-  // if (!newOrder) {
-  //   throw new ApiError(500, "Failed to create order");
-  // }
-  // const response = new ApiResponse(
-  //   201,
-  //   true,
-  //   "Order created successfully",
-  //   newOrder,
-  // );
-  return Response.json({ items, Total_MRP }, { status: 200 });
+  const existingOrder = await orderModel.findOne({
+    userId,
+    paymentStatus: "pending",
+    orderStatus: "created",
+  });
+  if (existingOrder && existingOrder.paymentStatus === "pending") {
+    await orderModel.updateOne(
+      { _id: existingOrder._id },
+      {
+        orderStatus: "cancelled",
+        paymentStatus: "failed",
+      },
+    );
+  }
+  const newOrder = await orderModel.create({
+    userId,
+    items,
+    shippingAddress,
+    pricing,
+    totalAmountInPaise,
+  });
+  if (!newOrder) {
+    throw new ApiError(500, "Failed to create order");
+  }
+  const response = new ApiResponse(
+    201,
+    true,
+    "Order created successfully",
+    newOrder,
+  );
+  return Response.json(response, { status: response.statusCode });
 });
