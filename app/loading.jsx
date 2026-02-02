@@ -1,11 +1,11 @@
 import React from "react";
 
-function loading() {
+function Loading() {
   return (
-    <div className="h-screen w-full">
-      <span className="text-2xl font-bold">Loading...</span>
+    <div className="flex h-[85vh] w-full items-center justify-center">
+      <span className="text-4xl">Loading...</span>
     </div>
   );
 }
 
-export default loading;
+export default Loading;
