@@ -9,6 +9,30 @@ export default function PaymentMethodPage({ searchParams }) {
 
   const [method, setMethod] = useState(null);
   const [loading, setLoading] = useState(false);
+  console.log(method);
+  // const handleContinue = async () => {
+  //   if (!method) return;
+
+  //   setLoading(true);
+
+  //   if (method === "cod") {
+  //     // COD → confirm order directly
+  //     const res = await fetch("/api/orders/confirm-cod", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ orderId }),
+  //     });
+
+  //     const data = await res.json();
+  //     if (data.success) {
+  //       router.push(`/checkout/success?orderId=${orderId}`);
+  //     }
+  //   }
+
+  //   if (method === "online") {
+  //     router.push(`/checkout/payment?orderId=${orderId}`);
+  //   }
+  // };
 
   const handleContinue = async () => {
     if (!method) return;
@@ -16,24 +40,23 @@ export default function PaymentMethodPage({ searchParams }) {
     setLoading(true);
 
     if (method === "cod") {
-      // COD → confirm order directly
-      const res = await fetch("/api/orders/confirm-cod", {
+      const response = await fetch("/api/orders/confirm-cod", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ orderId }),
       });
-
-      const data = await res.json();
+      const data = await response.json();
+      console.log(data);
       if (data.success) {
         router.push(`/checkout/success?orderId=${orderId}`);
       }
     }
-
     if (method === "online") {
       router.push(`/checkout/payment?orderId=${orderId}`);
     }
   };
-
   return (
     <div className="mx-auto mt-10 max-w-md">
       <h1 className="mb-4 text-xl font-semibold">Choose Payment Method</h1>
