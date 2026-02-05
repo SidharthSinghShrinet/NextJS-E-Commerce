@@ -44,6 +44,7 @@ export const POST = asyncHandler(async (request, context) => {
       price: product.price,
       image: product.images?.[0] || "",
       title: product.title,
+      expectedDelivery: product.shippingInformation,
     });
   }
   console.log("Items are:", items);

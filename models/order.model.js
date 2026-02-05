@@ -31,6 +31,11 @@ const orderSchema = new mongoose.Schema(
             type: Number,
             required: true,
           },
+          expectedDelivery: {
+            type: String,
+            required: true,
+            default: "Free Delivery within 2-3 business days",
+          },
           _id: false,
         },
       ],
@@ -87,7 +92,7 @@ const orderSchema = new mongoose.Schema(
     paymentProvider: {
       type: String,
       enum: ["razorpay", "stripe", "paypal", "cod"],
-      immutable: true,
+      // immutable: true,
       default: "stripe",
     },
     paymentIntentId: {
