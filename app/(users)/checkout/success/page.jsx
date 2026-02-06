@@ -22,8 +22,9 @@ function Page({ searchParams }) {
         },
         body: JSON.stringify({ orderId }),
       });
+      console.log("response", response);
       const orderData = await response.json();
-      // console.log(orderData);
+      console.log("orderData", orderData);
       if (!orderData.success) {
         return;
       }

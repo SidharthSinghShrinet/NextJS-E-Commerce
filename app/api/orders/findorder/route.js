@@ -15,12 +15,12 @@ export const POST = asyncHandler(async (request, context) => {
   if (!order) {
     throw new ApiError(404, "Order not found");
   }
-  if (order.paymentStatus !== "pending" && order.orderStatus !== "created") {
-    throw new ApiError(400, "Order is not payable");
-  }
-  if (order.isPaymentFinalized) {
-    throw new ApiError(400, "Payment of order is already completed");
-  }
+  // if (order.paymentStatus !== "pending" && order.orderStatus !== "created") {
+  //   throw new ApiError(400, "Order is not payable");
+  // }
+  // if (order.isPaymentFinalized) {
+  //   throw new ApiError(400, "Payment of order is already completed");
+  // }
   const response = new ApiResponse(
     200,
     true,

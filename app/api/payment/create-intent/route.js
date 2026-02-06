@@ -36,6 +36,7 @@ export const POST = asyncHandler(async (request, context) => {
     const existing = await stripe.paymentIntents.retrieve(
       order.paymentIntentId,
     );
+    console.log("Existing Payment Intent:", existing);
     if (existing.status === "succeeded") {
       throw new ApiError(400, "Payment of order is already completed");
     }
@@ -57,6 +58,7 @@ export const POST = asyncHandler(async (request, context) => {
       userId: userId.toString(),
     },
   });
+  console.log("New created Payment Intent:", paymentIntent);
   order.paymentIntentId = paymentIntent.id;
   await order.save();
 

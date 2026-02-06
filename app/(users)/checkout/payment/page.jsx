@@ -40,7 +40,9 @@ function Page(props) {
         },
         body: JSON.stringify({ orderId }),
       });
+      console.log("Intent Response", intentRes);
       const intentData = await intentRes.json();
+      console.log("Intent Data", intentData);
       setClientSecret(intentData?.data?.clientSecret);
       setLoading(false);
     }
