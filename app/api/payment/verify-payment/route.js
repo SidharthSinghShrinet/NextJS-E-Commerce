@@ -14,13 +14,15 @@ export const POST = asyncHandler(async (request, context) => {
     throw new ApiError(400, "Payment intent id is required");
   }
   const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-  console.log("Payment Intent:", paymentIntent);
   if (paymentIntent.status !== "succeeded") {
     throw new ApiError(400, "Payment is not successful");
   }
-  const order = await orderModel.findOne({ userId, paymentIntentId });
+  const order = await orderModel.findOne({ paymentIntentId });
   if (!order) {
     throw new ApiError(400, "Order not found");
+  }
+  if (paymentIntent.amount !== order.totalAmountInPaise) {
+    throw new ApiError(400, "Payment amount is not correct");
   }
   if (order.paymentStatus !== "paid") {
     order.paymentStatus = "paid";

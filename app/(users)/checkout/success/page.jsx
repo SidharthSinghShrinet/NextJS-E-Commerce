@@ -36,12 +36,14 @@ function Page({ searchParams }) {
   return (
     <div className="flex h-[90vh] w-full items-center justify-center">
       <div className="h-[90%] w-[60%] rounded-2xl bg-blue-100 shadow-2xl shadow-neutral-300">
-        <div className="h-[58%] w-full">
+        <div className="relative h-[58%] w-full">
           <Image
             src={success}
             alt="success"
             unoptimized
-            className="h-full w-full rounded-t-2xl object-cover"
+            fill={true}
+            sizes="100%"
+            className="absolute h-full w-full rounded-t-2xl object-cover"
           />
         </div>
         <div className="flex flex-col gap-3 p-2">
