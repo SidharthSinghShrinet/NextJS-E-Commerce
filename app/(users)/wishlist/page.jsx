@@ -42,11 +42,16 @@ function Page() {
       const response = await fetch(
         "http://localhost:3000/api/wishlist/findwishlists",
       );
-      const data = await response.json();
-      setWishlists(data ?? []);
+      if (response?.status === 200) {
+        const data = await response.json();
+        setWishlists(data ?? []);
+      } else {
+        setWishlists([]);
+      }
     }
     getWishlists();
   }, []);
+
   return (
     <div className="flex min-h-screen w-full justify-center">
       <div className="flex h-full w-[55%] flex-col gap-3 bg-white pt-5 shadow-xl">
